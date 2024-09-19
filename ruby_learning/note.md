@@ -61,8 +61,8 @@ end
 で定義する  
 **クラス名.クラスメソッド名**で呼び出す
 
-- モジュール
-メソッドや定数を定義してクラスに組み込める。
+- モジュール  
+メソッドや定数を定義してクラスに組み込める。  
 **include**で組み込むか**extend**で組み込むかで動きがかわる
 
 参考：[Rubyのクラスとインスタンスを学ぼう](https://pikawaka.com/curriculums/programming-introduction/ruby-class)
