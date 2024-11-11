@@ -89,66 +89,7 @@
   Dockerfileがあれば履歴もわかるので、Docker Hubから直接DLしてきたイメージ等Dockerfileがないときにつかう。  
   Docker Hubから直接DLしたイメージは中身がどういう履歴で作られているのかわからないのでこのコマンドを使う。
 
-# Dockerfileコマンド
-- RUNとCMD  
-  どちらもLinuxのコマンドを実行するけど、実行タイミングが異なる。  
-  RUNは**Dockerfile　→　イメージ**  
-  CMDは**イメージ　→　コンテナ**  
-
-  CMDはexec形式での記述が推奨されている。  
-  Jsonの配列形式で記述するので、必ずコマンドを`""（ダブルクオーテーション）`で囲む。`''（シングルクオーテーション）`だとコマンドとして認識されない。  
-  参考：[docker-docs-ja - dockerfileリファレンス - CMD](https://docs.docker.jp/engine/reference/builder.html#cmd)
-
-  ```Dockerfile
-  FROM ubuntu:20.04
-  # ベースイメージ：ubuntuのVer20.04
-  RUN apt-get update -y && \
-  # パッケージのアップデート。&&はレイヤーをひとつにまとめるコマンド。
-    apt-get install -y nginx
-  # nginxのインストール。ここまでがdocker build時に実行されてイメージになる。
-  CMD["nginx","-g","demon off;"]
-  # RUNコマンドで作られたイメージからコンテナを立ち上げる。demon offはnginxをフォアグラウンドで稼働させるコマンド。
-  ```
-  ```Dockerfile
-  ...
-  RUN apt-get update -y
-  RUN apt-get install -y nginx
-  # RUNコマンドはこう書いてもいいが、RUNが2個あるので、レイヤーが2つ作られてしまう。
-  # 動画では、updateとinstallは似たコマンドなので&&で一つのレイヤーにまとめて
-  # レイヤーイメージの縮小を図るとのこと。
-  # \で改行になる。
-  ```
-  - `decker build -t`でイメージに名前を付けられる。
-  - `docker run -d`でバックグラウンド起動。
-- COPYとADDコマンド  
-  どちらもファイルをイメージに追加する命令。  
-  ADDはネット経由からもファイルをダウンロードできたり、tar/zipみたいな圧縮ファイルでも追加できる。  
-  Docker公式はCOPYを推奨しているので、ADDよりCOPYを使った方がいい。  
-  機能が絞られていた方が間違いがないし、基本的にホストのファイルを追加するだけで十分なことができる。  
-  ```Dockerfile
-  COPY ホストのファイル コンテナのパス
-  # docker buildでホストのファイルが指定したコンテナのパスの中に入る。
-  ```
-  COPYの使いどころ
-  - イメージにプログラムのソースコードを入れたいとき
-  - 設定ファイルをあらかじめソフトのほうに入れておいて、設定ファイルが反映された状態でイメージを作りたいとき
-- ENV  
-  環境変数を設定するコマンド。  
-  DockerfileがDockerイメージにbuildされるタイミングで環境変数を決めておける。  
-  - DBのユーザー名
-  - 動作環境（localとかproductionとか） 
-  等によく使う。
-  ENVは直接書き込みなので固定値になってしまうから、環境によって環境変数の値を出し分けたいときには使えない。
-  ```dockerfile
-  ENV TESTENV=testvalue
-  # キー＝バリューで書く。なんでもいい。
-  ENV APP_ENV="production"
-  # アプリの環境についての設定。よく使う？らしい。
-  # 複数設定できるので並べて書いていい。
-  ENV key value
-  # こういう書き方もある。
-  ```
-# docker-compose  
+# docker-composeコマンド  
 - `docker compose down`  
   docker-compose.ymlで管理されているコンテナをストップして削除するコマンド  
   今いるディレクトリのdocker-compose.ymlのみ適用。  
