@@ -103,3 +103,129 @@ if (ok) {
 } else {
   console.log('NO');
 }
+
+let nullishSample = '' ?? 'Sample';
+//nullかundefinedの時はSample（右側）が返る。空文字のときはそのまま空文字（左側）が返る。
+/*null合体演算子。Nullish Coalescing Operator（https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Operators/Nullish_coalescin）
+AND演算子やOR演算子と一緒に使うことはできない。*/
+let notSample = !'hello';
+//false
+/*NOT演算子。trueとfalseを反転させる。
+truthyでもfalsyでもできる。*/
+notSample = !x;
+//定数でも使える。x = 15にしているのでfalse
+notSample = !!x;
+//true
+/*論理積演算子は右から左に結合性があるので、!xを計算してから!を計算する。
+!xでfalseになり、最後の!でtrueになる。
+xには今number型が入っているが、!!を付けることで型を真偽値に変更している。*/
+
+//ブロック文＝複数の文や宣言を一つにまとめる文
+const blockSample = 'Sample2'
+{
+  //console.log(blockSample);
+  const blockSample = 'Sample1';
+}
+/*ブロックスコープを持っているので、ブロック文の外からブロック文の中の定数とかにアクセスしようとすると
+Uncaught ReferenceError: blockSample is not definedエラーがでる。
+ブロック文の中にネストしてブロック文を入れることもできる。
+グローバルスコープとローカルスコープで同じ定数が定義されている時、ローカルスコープが優先されるが、
+ブロック文の中でローカル定数の前にグローバル定数を呼び出そうとすると、
+Uncaught ReferenceError: Cannot access 'blockSample' before initializationエラーがでる。
+ローカルのほうが優先されてしまう。*/
+if (ok);
+/*if文は↑までは同じ形だけど、()の後の{}の部分はどんな文でもいい。
+複数の文を使うことが多いのでブロック文をつかっているだけなので、;を付けて空文で終わらせることもできる。
+式がtrueなら何もしないなら;でもよい。
+なんでもいいから式文をいれてもいい。
+この後にelseで続けることもできる。
+else ifも、else文の後は好きなものを入れることができる。あくまでもif文をいれているだけ。*/
+
+ok = ok ? 'OK' : 'NO';
+//OK
+//?と:で三つの式を挟むのを三項演算子という。
+//if文とにた感じで条件分岐できる。
+//okがtruthyなら:の左側の値を、falsyなら:の右側の値を返す。
+
+function vegetableColor(vegetable) {
+  switch (vegetable) {
+    case 'tomato':
+      console.log('tomato is red!');
+      break;
+    case 'carrot':
+    case 'pumpkin':
+      console.log(`${vegetable} is orange!`);
+      break;
+    case 'onion':
+      console.log('onion is white!');
+      break;
+    default:
+      console.log('not found');
+  }
+  // if (vegetable === 'tomato') {
+  //   console.log('tomato is red!');
+  // } else if (vegetable === 'pumpkin') {
+  //   console.log('pumpkin is orange!');
+  // } else if (vegetable === 'onion') {
+  //   console.log('onion is white!');
+  // }
+}
+vegetableColor('carrot');
+/*case文は内部的にvegetableとcaseで指定した値が===かを判定している。
+breakを入れないと値の合致するcase以降の全部のcaseが実行されてしまう。
+度の値にも合致しないときの処理はdefaultで設定できる。
+スイッチ文の中ではスコープがあるけど、それぞれのcaseの中ではスコープはないため、同名の定数を定義したりはできない。
+ブロック文で囲えばcaseごとに定数を宣言してもエラーが起こらないので安全。*/
+
+let count = 100;
+while (count < 10) {
+  console.log('while: ' + count);
+  count += 1;
+}
+console.log(`while: last ${count}`);
+//while文
+
+let tomatoCount = 100;
+do {
+  console.log('do-while:' + tomatoCount);
+  tomatoCount += 1;
+} while (tomatoCount < 10);
+console.log(`do-while: last ${tomatoCount}`);
+//do-while: last 101
+/*do-while文
+do {}がまず実行されて、そのあとにwhile ()内の条件式を評価して、trueだったらもう一でdo {}を実行する。
+一番最初の文は何の条件なしに問答無用で実行される。*/
+
+for (let pumpkinCount = 0; pumpkinCount < 10; pumpkinCount += 1) {
+  console.log(pumpkinCount);
+}
+/*for (初期値; 条件式; 最後に行いたい式文)
+let宣言とかが使える。
+一番右の式を実行してから真ん中の評価をするという風に内部的に処理されている。*/
+
+let a = 'a', b = 'b', c;
+console.log(a, b, c);
+//a b undefined
+/*変数や定数は,で区切って複数設定することができる。
+カンマ演算子というのもある。優先順位は＝より下。*/
+let commaSample1 = 0;
+let commaSample2 = 0;
+commaSample1 += 1, commaSample2 += 1
+//みたいに書くことができる。あんまり使わない。
+
+const fruits = ['apple', 'banana', 'grape', 'orange', 'mango']
+for (let i = 0; i < fruits.length; i += 1) {
+  console.log(fruits[i]);
+}
+
+for (const fruit of fruits) {
+  console.log(fruit);
+}
+/*for-of文。()の中にofが入る。
+ofの右側に配列を入れる。左側には何かの変数を入れる。
+右側の配列の一つ目を左側の変数に入れていく。
+変数はletだけど、constに入れても同じように動く。
+他のfor文と違って、一回一回変数が削除されているイメージ？毎回毎回ループごとに違うブロックで実行しているイメージ。
+letだと上書き変更できてしまうからconstのほうがいい。
+右側には文字列でもいける。
+オブジェクトはできない。*/
