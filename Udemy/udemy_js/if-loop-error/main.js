@@ -215,11 +215,11 @@ commaSample1 += 1, commaSample2 += 1
 
 const fruits = ['apple', 'banana', 'grape', 'orange', 'mango']
 for (let i = 0; i < fruits.length; i += 1) {
-  console.log(fruits[i]);
+  //console.log(fruits[i]);
 }
 
 for (const fruit of fruits) {
-  console.log(fruit);
+  //console.log(fruit);
 }
 /*for-of文。()の中にofが入る。
 ofの右側に配列を入れる。左側には何かの変数を入れる。
@@ -228,4 +228,114 @@ ofの右側に配列を入れる。左側には何かの変数を入れる。
 他のfor文と違って、一回一回変数が削除されているイメージ？毎回毎回ループごとに違うブロックで実行しているイメージ。
 letだと上書き変更できてしまうからconstのほうがいい。
 右側には文字列でもいける。
-オブジェクトはできない。*/
+オブジェクトはできない。
+for-ofは配列をループしたいときにつかう！*/
+
+const coffee = {
+  name: 'Chocolate Mocha',
+  size: 350,
+  isHot: true,
+  toppings: ['Cinnamon', 'Caramel'],
+  nutrition: {
+    calories: 430,
+    sugars: 53,
+  },
+};
+
+for (const key in coffee) {
+  if (key === 'size') {
+    console.log('continue');
+    continue;
+  }
+  console.log(key);
+  console.log(coffee[key]);
+}
+/*for-in文
+オブジェクトが使える。配列も使える。
+配列を扱うときは基本的にfor-of文を使うので、for-inはオブジェクトに使う。
+オブジェクトのキーを左側に定義した定数に入れてループする。
+バリューをループ処理で取り出したいときはオブシェクト名[定義した定数]でとりだす。*/
+
+/*ループ文の中でbreakを使うと、直ちにこのループから抜けるという処理になる。
+while文とかで無限ループを避けるために使える。
+他、特定の条件下でループを終わらせたいときとかに使える。
+ループ文がネストしている時は、ネストの内側のループ処理がおわる。*/
+
+/*continue文はその処理をスキップする文。
+指定した処理をスキップして、次のループにいく。
+↑の例だと、
+name
+Chocolate Mocha
+continue　←　continueでスキップされた処理
+isHot
+true
+toppings
+['Cinnamon', 'Caramel']
+nutrition
+{calories: 430, sugars: 53}
+となる。*/
+
+label: {
+  break label;
+}
+
+/*ラベル文
+breakとcontinueと一緒に使う。
+識別子名: 文
+でつかう。
+breakとかの後ろにラベルで指定した識別子を入れると、breakが発動したらその文の次の行に飛ぶ。
+↑の例だと281行目に処理が飛ぶということ。
+continue文でラベル文を使うときは、識別子の右側が必ずループになっていなければならない。
+continue文はループをスキップして次のループにいく、という処理なので。
+ラベル文はわかりにくいのであんまり使われない。*/
+
+function logChocolate() {
+  try {
+    console.log('try');
+    console.log(chocolate);
+  } catch {
+    console.log('catch');
+    console.log(chocolate);
+  } finally {
+    console.log('finally');
+    return 'hello';
+  }
+}
+console.log(logChocolate());
+/*try-catch文
+エラーがー起きても処理を止めたくないときにつかう。
+tryにエラーが起きるかもしれない処理を書いておくと、エラーが起きてもcatchに書いた処理を実行してくれる。
+try-catchの外に書いた処理も実行してくれる。
+tryでエラーが起きなかったらcatchの処理は実行されない。
+JSエンジンはJSを読み込んで解析した後に実行されるので、構文エラーはtry-catchで処理を継続させることはできない。
+どうしてもエラーを完全に防ぐことができないときにつかう。
+try-catch-finallyもある。try-finallyでもtry-catchでもいい。
+finallyは最後に必ず実行される。どんな理由で処理が終了しようが実行される。
+優先順位がかなり高いので、何が起こってもfinallyで上書きしてしまう。
+finallyの中でreturnとかしちゃうとエラーも上書きしてしまう。
+↑の例だと本来なら未定義エラーが出なければならないが、finallyでreturn文をつかったことでエラーがでずに
+try
+catch
+finally
+hello
+と出力される。
+普通に文が終わる以外の終わり方で文が終わったときに上書きする。
+文が終わるとは、普通に処理が終わるパターンと、リターン文をつかって終わるパターンと、
+ブレイク文を使って終わるパターンと、throw文を使って終わるパターンと、コンテニュー文を使っておわるパターンの5つ
+finallyはreturn、break、throw、continueを使って終わるときのみ上書きする。*/
+
+try {
+  console.log('throw try')
+  throw {message: 'throw an error'};
+} catch (error) {
+  console.log('throw catch', error);
+}
+/*throw文
+エラーを作り出す。
+console.errorはエラーっぽくログを表示させるだけ。
+throw文は確実にエラーになる。
+catch文は引数を取ることもできるので、(error)と書くとthrow文の右側の式を受け取れる。
+変数未定義とかのエラーも受け取れる。
+ブラウザが内部的にthrow文を使って値を返してくれる。
+error.nameとerror.messageで値を受け取れる。
+未定義エラーのnameはReferenceError、messageはchocolate is not definedとなる。*/
