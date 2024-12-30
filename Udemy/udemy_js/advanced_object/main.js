@@ -149,14 +149,63 @@ const car = {
 const car2 = { ...car };
 car2.changeColor('white');
 console.log(car2);
+
+let sayThis2 = () => {
+  console.log(this);
+};
+let logging = (cb) => {
+  console.log(cb()); // ここのthisは.で呼び出されてないので、グローバルオブジェクト
+};
+const car3 = {
+  color: 'red',
+  sayThis,
+  changeColor: function(color) {
+    logging(() => {
+      return this.color = color;
+    }); // アロー関数でcb()を使えば、thisは持たないのでchangeColorのthisを使うことになる。
+    this.color = color;
+  },
+};
 // this
 /*
 オブジェクトに登録したメソッドとしてthisを呼び出すとthisはそのオブジェクトになる。
-thisは.の左側の値が返る。
+thisは.の左側の値が返る。どれだけネストしても、.の一つ左のメソッドを示す。
 アロー関数はthisを持たない。のでグローバルオブジェクトが返る。
+コールバック関数でのthisは.で呼び出していないので、グローバルオブジェクト（か、ストリクトモードだとundefined）になる。
 メソッドの中にある関数呼び出しの引数がコールバック関数になっている時にthisを使いたいときは、
 アロー関数にすると、アロー関数はthisを持たないので、その一つ外側にあるthisを採用する。
 thisの制限があるので、なるべくメソッドはfunctionで書いたほうがいい。
+*/
+
+sayThis = function (a, b) {
+  console.log(this, a, b);
+};
+// sayThis.call({hello: 'hello'}, 1, 2);
+// thisを特定のオブジェクトというふうに指定したいとき。
+/*
+sayThisもあくまでも関数オブジェクト。オブジェクトにはメソッドやプロパティがあって、
+そのうちの一つがcallメソッド。
+第一引数の値がthisになる。
+callを使うとthisの中身を自分で指定できる。
+*/
+// sayThis.apply({hello: 'hello'}, [1, 2]);
+/*
+callとほとんど同じ処理だが、引数に値を渡すときの渡し方がちがう。
+どちらにしてもアロー関数では使えない。
+*/
+
+sayThis =sayThis.bind({hello: 'hello'}, 1);
+sayThis(2);
+// => {hello: 'hello'} 1 2
+//bind
+/*
+関数を呼び出すのではなく、新しい関数を作り出す。
+thisが引数に渡されたものがオブジェクトとなる関数を作り出しているだけ。
+関数オブジェクトが返り値になるので何かに代入してあげる必要がある。
+callやapplyを使ってもthisは書き換えらえない。どんな呼び出され方でもbindで指定したthisのみが呼び出される。
+パラメータも固定する。全部指定しなくてもいいので、第二パラメータを指定していないときは、関数呼び出し
+のときの第一引数で第二パラメータを指定できる。
+アロー関数に対してbindをつかってもthisがないのでthisは使えないが、パラメータは固定できる。
 */
 
 const pastaCalculator = {
