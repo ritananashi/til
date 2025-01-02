@@ -31,13 +31,71 @@ const UserConstructor = function(name, age) {
 UserConstructor.prototype.greeting = function () {
   return 'Hi! This is ${this.name}. I am ${this,age} years old.'
 }
-const user1 = new UserConstructor('rita', 30);
+//const user1 = new UserConstructor('rita', 30);
 const user2 = new UserConstructor('nanashi', 32);
 const user3 = new UserConstructor('mary', 31);
-console.log(user1);
+//console.log(user1);
 console.log(user2);
 console.log(user3);
 /*
 newで関数を呼び出した時は、新しいオブジェクトが作られてthisに代入される。
 すべての関数はプロトタイプというプロパティを持っている。
+*/
+
+let o = new Object();
+Object.prototype.hello = 'hello';
+console.log(o);
+//コンストラクタ関数
+/*
+new Objectでからっぽのオブジェクトが作れる。
+初期値として引数にデータを入れることもできる。
+o.__proto__ === Object.prototype
+newは使わずに{}を使った方がいい（わかりやすいので）
+*/
+
+o = {
+  a: 1,
+};
+//console.log(o);
+//console.log(o.hasOwnProperty('hello'));
+//console.log('hello' in o);
+//hasOwnProperty
+/*
+そのオブジェクトにそのプロパティがあるかどうかを調べる。
+in演算子と違って、hasOwnPropertyはプロトタイプチェーンまでみない。
+Object.prototype.hasOwnProperty.call(o, 'hello')ならプロトタイプチェーンまでみる。
+hasOwnPropertyは内部的にthisを使っているので、引数にオブジェクトを渡すと動く。
+*/
+
+class User {
+  static id;
+  static {
+    let ok = true;
+    if (ok) {
+      User.id = 120
+    } else {
+      User.id = 40;
+    }
+  }
+  // 動的にidの値を変更できる
+
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  birthday = '1990/1/1'
+  greeting() {}
+  post() {}
+}
+const user1 = new User('Rita', 30);
+console.dir(user1)
+//クラス
+/*
+内部的にはただの関数オブジェクト。
+呼び出すときは必ずnewを使う。
+基本的には省略記法のメソッドのみ掛ける。
+constructor(){}メソッドの中で定義されたものは、new時に真っ先に実行される。
+thisなどの設定もここで行える。
+メソッド名にget、setをつけるとgetterとsetterを簡単に設定できる。
+クラスの中はストリクトモードになる。
 */
