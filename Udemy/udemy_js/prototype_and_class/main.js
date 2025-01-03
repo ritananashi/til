@@ -79,9 +79,13 @@ class User {
   }
   // 動的にidの値を変更できる
 
+  #age = 0
+  //プライベートプロパティを定義。
+  //必ず頭に#をつける。
+  //クラスのフィールド内じゃないと定義できない。
   constructor(name, age) {
     this.name = name;
-    this.age = age;
+    this.#age = age;
   }
   birthday = '1990/1/1'
   greeting() {}
@@ -98,4 +102,32 @@ constructor(){}メソッドの中で定義されたものは、new時に真っ�
 thisなどの設定もここで行える。
 メソッド名にget、setをつけるとgetterとsetterを簡単に設定できる。
 クラスの中はストリクトモードになる。
+*/
+
+class Animal {
+  age = 0;
+  constructor(age) {
+    this.age = age;
+  }
+  eat(){}
+}
+class Bird extends Animal {
+  name = 'pi'
+  constructor(age, name) {
+    super(age)
+    this.name = name;
+  }
+  fly(){}
+}
+const bird = new Bird(3);
+console.log(bird);
+//継承
+/*
+extendsで別のクラスを継承できる。
+継承先のことを子クラスと呼ぶこともある。
+親クラスにコンストラクター関数があって、
+子クラスでコンストラクター関数を使いたいときはsuper()で呼び出す。
+スタティックメソッドも継承されるので、bird.eat()みたいにできる。
+superはthisよりも上にかく。thisはsuperが作られるときに作られるので。
+
 */
