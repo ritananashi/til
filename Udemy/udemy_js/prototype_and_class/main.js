@@ -109,18 +109,29 @@ class Animal {
   constructor(age) {
     this.age = age;
   }
-  eat(){}
+  eat(){
+    console.log('eat from Animal')
+  }
 }
+//Bird.__proto__ = Animal
+//Bird.prototype.__proto__ = Animal.prototype
+//[[constructorKind]]: "derived"
 class Bird extends Animal {
   name = 'pi'
   constructor(age, name) {
     super(age)
     this.name = name;
   }
+  eat(){
+    super.eat()
+    console.log('eat from bird')
+    //eat from Animal
+    //eat from bird
+  }
   fly(){}
 }
 const bird = new Bird(3);
-console.log(bird);
+bird.eat();
 //継承
 /*
 extendsで別のクラスを継承できる。
@@ -129,5 +140,6 @@ extendsで別のクラスを継承できる。
 子クラスでコンストラクター関数を使いたいときはsuper()で呼び出す。
 スタティックメソッドも継承されるので、bird.eat()みたいにできる。
 superはthisよりも上にかく。thisはsuperが作られるときに作られるので。
-
+継承したメソッドを上書きしたいのではなく追加したいときはsuper.をつかう。
+super.はどこでも使える。クラスの中じゃなくても使える。
 */
