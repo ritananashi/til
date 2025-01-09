@@ -116,3 +116,39 @@ result = new Intl.DateTimeFormat('ja-JP-u-ca-japanese', {
 //'ja-JP'で日本語指定。'ja-JP-u-ca-japanese'で和暦。
 console.log(result);
 
+let map = new Map([
+  ['name', 'rita'],
+  ['age', 30],
+  ['gender', 'woman'],
+]);
+//キーとバリューで値を保存する。
+//イテラブルオブジェクトならOK
+map.set('city', 'tokyo');//追加
+result = map.get('city');//値の取得
+result = map.has('city');//要素が存在するかどうか
+result = map.delete('city');//特定の要素の削除
+//result = map.clear();//全部削除
+result = map.size;//Mapの要素数を返す
+map.forEach((value, key, map) => {
+  console.log(value, key, map)
+});
+//挿入順で処理。ループ。
+console.log(map)
+
+let set = new Set(['hello', 3, {name: 'rita'}, ['music']])
+set.add({name: 'Jack'}).add(true);
+//値の追加
+set.add('hello');//重複する値は無視される。
+console.log(set);
+
+let rita = {name: 'rita'}
+let weakMap = new WeakMap([
+  [rita, 'hokkaido']
+])
+//キーにオブジェクトが設定されていて、アクセスできなくなった時に要素から消してくれる。
+//元のオブジェクトがガベージコレクトされたときに削除する。
+
+let weakSet = new WeakSet([rita]);
+//オブジェクトしか入れられない。
+//他からアクセスされなくなるとガベージコレクトされる。
+console.log(weakSet);
