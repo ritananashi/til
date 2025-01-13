@@ -84,4 +84,104 @@ document.body.innerHTML = '<!-- comment --><h1>Hello</h1><div>I am Tom</div> How
 document.body.insertAdjacentText('beforeend', '<h2>Rita</h2>');
 //第一引数で死体した場所に第二引数の内容を追加。
 //これもタグを文字として認識するのでXSS対策になる。
+let p = document.createElement('p');
+let text = document.createTextNode('text');
+let comment = document.createComment('comment');
+//ノードを作成する。第一引数に要素名。
+p.innerHTML = 'Hello';
+p.textContent = 'hello';
+p.append(text);
+document.body.innerHTML = '<div>I am Tom</div>';
+//document.querySelector('div').append(p);
+//指定した要素内に第一引数で指定したノードを挿入する。閉じタグの前に入る。
+//document.querySelector('div').prepend(p);
+//開始タグの後に挿入。
+//document.querySelector('div').before(p);
+//開始タグの前に挿入
+document.querySelector('div').after(p);
+//閉じタグの後ろに挿入
+//すべて引数に文字列を指定することもできる。
+//引数にタグを渡されても、文字として認識する。
+
+p = document.createElement('p');
+p.textContent = 'hello';
+document.body.innerHTML = '<div>I am Tom</div>';
+document.querySelector('div').append(p);
+let p2 = p.cloneNode(true);
+document.querySelector('div').prepend(p);
+//同じ要素を追加しようとしても、後に記述した方に移動する、という形になってしまう。
+//cloneNodeでノードを複製できる。引数にtrueを渡すと、中身も全部コピーできる。
+p.remove();
+//指定した要素を削除する。
+p2.replaceWith(document.createElement('p'), text, comment, 'apple', '<p>banana</p>')
+//指定した要素を引数で上書き
+
+result = document.nodeType;
+//そのノードがどんなノードかを数字で返す。9がドキュメントノード
+result = document.body.nodeName;
+//要素のタグを大文字で返してくれる。
+result = document.body.id;
+//エレメントインターフェースにid属性が有ったらその属性値を返す。
+result = document.body.attributes;
+//要素の属性を一覧でみれる
+result = document.body.getAttribute('data-myarrt');
+result = document.body.dataset.type;
+//独自で属性を作りたいときはdata-を頭につけるdata属性を使うといい。
+//datasetを使うとdata-がついてる属性を一覧で出してくれる。
+//getAttributeのdata-専用みたいな。
+
+result = document.styleSheets;
+//CSSOMがみれる。
+//CSSの｛｝が1つのCSSStyleRule
+document.styleSheets[0].cssRules[0].style.color = 'red'
+//CSSの変更。ほとんど使わない。
+document.body.innerHTML = '<p class="text-green bg-yellow">hello</p>';
+result = document.querySelector('p').className;
+document.querySelector('p').className = 'text-red bg-blue'
+//CSSのクラスを書き換える。あんまり使わない。
+document.querySelector('p').classList;
+//こっちつかう
+document.querySelector('p').classList.remove('bg-blue');
+//指定した要素から引数に指定したCSSを削除
+document.querySelector('p').classList.add('bg-blue');
+//クラスを追加する
+document.querySelector('p').classList.toggle('bg-blue');
+//引数に指定したクラスがあったら削除、なかったら追加。
+document.querySelector('p').classList.contains('bg-blue');
+//引数に指定したクラスがあったらtrue
+document.querySelector('p').style;
+document.querySelector('p').style.color = 'yellow';
+//色変え
+document.querySelector('p').style.backgroundColor = 'pink';
+//CSSはキャメルケースで指定する。
+document.querySelector('p').style.width = '300px';
+//値はすべて文字列で指定する。設定したものを削除したいときは空文字にする。
+result = getComputedStyle(document.querySelector('p'));
+//CSSStyleDeclarationが取得できる。
+//getComputedStyleで取得したCSSStyleDeclarationのオブジェクトは変更不可
+document.body.innerHTML = '<div class="box"></div><p style="margin: 1000px 0px">this is a pen</p>';
+result = document.querySelector('div').getBoundingClientRect();
+//DOMRectがみれる。
+const messageEl = document.createElement('p');
+messageEl.textContent = 'message!';
+document.body.append(messageEl);
+messageEl.style.position = 'absolute';
+messageEl.style.top = `${
+  document.querySelector('div').getBoundingClientRect().bottom
+}px`;
+messageEl.style.left = `${
+  document.querySelector('div').getBoundingClientRect().left
+}px`;
+document.elementFromPoint(300, 300);
+//x, y軸で指定した要素を取得。
+//指定した場所にあるものを取得する。
+result = document.querySelector('div').clientWidth;
+//指定した要素の内側の横幅を取得
+result = document.querySelector('div').clientHeight;
+//指定した要素の内側の高さ
+result = document.querySelector('div').clientLeft;
+//指定した要素のボーダーの横幅
+result = document.querySelector('div').scrollHeight;
+//スクロールも含めた高さを取得
+
 console.dir(result);
