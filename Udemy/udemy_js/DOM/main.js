@@ -184,4 +184,20 @@ result = document.querySelector('div').clientLeft;
 result = document.querySelector('div').scrollHeight;
 //スクロールも含めた高さを取得
 
+result = document.documentElement.scrollTop;
+//HTML要素が表示領域からどの程度スクロールされたかを返す。
+//pageYOffset
+// どれだけスクロールしたかを返す。
+//scrollTo(0, 100);
+//指定した位置にスクロールする。引数にはオブジェクトを渡すこともできる。
+//scrollBy(0, 50);
+//現状から指定した分ずらす。
+document.querySelector('p').scrollIntoView();
+//指定した要素がページの一番上に行くようにスクロールする。
+//引数にオブジェクトを渡せる。
+document.documentElement.style.overflow = 'hidden';
+//スクロールさせない
+document.body.style.overflow = 'hidden';
+//こっちでもいい。こっちをよく使う。
+
 console.dir(result);
