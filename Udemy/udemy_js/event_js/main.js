@@ -85,3 +85,30 @@ window.addEventListener('input', (event) => {
 //キャプチャー→（ターゲット）→バブリングの順で実行される。
 //{capture: true}じゃなくてtrueだけでも指定できるけど、これだと他のオプションを設定できない。
 //キャプチャーをtrueにして設定したイベントを削除したいときは、removeEventListenerの第三引数に{capture: true}を指定
+
+const aEl = document.querySelector('a');
+aEl.addEventListener('click', (event) => {
+  console.log(event.cancelable);
+  event.preventDefault
+})
+//preventDefault
+//デフォルトの挙動を無視する
+//デフォルトの挙動がないものは無視できない。
+//cancelable　→　挙動がキャンセルされてたらtrue
+//.onclick = () => false;でもデフォルトの挙動を止めることができる。
+//HTMLにonclick="return false"属性をつけてもデフォルトの挙動を止めることができる。
+
+document.documentElement.style.height = '1500px';
+window.addEventListener('wheel', (event) => {
+  for (let i = 0; i < 1e9; i++);
+  console.log(event)
+}, {
+  passive: true
+});
+//処理が重くてもスムーズにスクロールできる。
+//処理が軽くても重くても実装しといたほうがいい
+
+const myEvent = new Event('my-event');
+//Event属性はnewで作ることができる
+document.dispatchEvent(myEvent);
+//自分で作ったイベントを発生させる
