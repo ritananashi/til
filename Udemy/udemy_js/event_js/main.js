@@ -108,7 +108,53 @@ window.addEventListener('wheel', (event) => {
 //処理が重くてもスムーズにスクロールできる。
 //処理が軽くても重くても実装しといたほうがいい
 
-const myEvent = new Event('my-event');
+document.addEventListener('my-event', (event) => {
+  console.log(event);
+});
+const myEvent = new Event('my-event', {
+  bubbles: true, //デフォルトでバブリングがfalseになっているので、バブリングさせたいときはtrueを設定する。
+  cancelable: true, //デフォルトでfalseになっているので、preventDefaultを使いたいときはtrueを設定する
+});
 //Event属性はnewで作ることができる
+const myClickEvent = new PointerEvent('click', {
+  bubbles: true,
+  cancelable: true,
+});
+//既存のイベントを第一引数に設定することもできる。
+//PointerEventがクリックイベント用オブジェクト
+//既存のイベントを使ってイベントを発生させても、デフォルトの挙動は起こらない。
+//MouseEventで作った場合だけ、後方互換の関係でデフォルトの挙動が起こる。
+const myCustomEvent = new CustomEvent('click', {
+  bubbles: true,
+  cancelable: true,
+  detail: { message: 'hello'},//好きな値を入れられる。
+});
+//自由にイベントを作れる。
 document.dispatchEvent(myEvent);
 //自分で作ったイベントを発生させる
+//引数にイベントオブジェクトを渡す。
+
+/*
+mousedownイベント
+マウスをクリックしたときにイベントが発生する。左右どっちのマウスでもできる
+mouseupイベント
+マウスをクリックして放したときにイベントが発生する。左右どっちでも発生する。
+dbclickイベント
+同じ要素に対してクリックイベントが2回起こったら発生する
+contextmenuイベント
+右クリックで発生
+mousemoveイベント
+マウスが動いたとき
+mouseover
+マウスがホバーしたとき
+mouseout
+マウスがホバーしたものから離れたとき
+mouseenter
+マウスが要素に入ったら発生
+mouseleave
+マウスが要素から離れたら
+touch系イベント
+スマホ用
+pointer系イベント
+マウス系イベント
+*/

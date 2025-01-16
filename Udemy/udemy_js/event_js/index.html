@@ -9,6 +9,9 @@
   <button>click me</button>
   <input type="text">
   <a href="https://developer.mozilla.org">MDN</a>
-  <script src="main.js"></script>
+  <script src="main.js" defer></script>
+  <!-- DOMやCSSOMの読み込みが終わってから実行 -->
+  <script src="main.js" async></script>
+  <!-- スクリプトのDLが終わったら実行 -->
 </body>
 </html>
