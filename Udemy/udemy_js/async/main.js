@@ -154,9 +154,85 @@ let promise3 = new Promise((resolve, reject) => {
     resolve(3)
   }, 500)
 });
-Promise.all([promise, promise2, promise3]).tnen((value) => {
+Promise.all([promise, promise2, promise3]).then((value) => {
   console.log('Promise.all() then:', value);
 })
 .catch((error) => {
   console.log('Promise.all() catch:', error);
 });
+//引数に異寺ぶるオブジェクトをとる。
+//指定したpromiseがすべてresolveされたあとにresolveする
+Promise.allSettled([promise, promise2, promise3]).then((value) => {
+  console.log('Promise.all() then:', value);
+})
+.catch((error) => {
+  console.log('Promise.all() catch:', error);
+});
+//rejectがふくまれててもthenが実行される。
+
+Promise.race([promise, promise2, promise3]).then((value) => {
+  console.log('Promise.all() then:', value);
+})
+.catch((error) => {
+  console.log('Promise.all() catch:', error);
+});
+//一番初めにresolveかrejectしたものだけ返す
+
+Promise.any([promise, promise2, promise3]).then((value) => {
+  console.log('Promise.all() then:', value);
+})
+.catch((error) => {
+  console.log('Promise.all() catch:', error);
+});
+//最初にresolveされたものだけ返る
+
+Promise.resolve('value');
+//new Promise((resolve) => resolve('value'));とおなじ
+
+Promise.reject(new Error('reject'));
+//new Promise((resolve, reject) => reject(new Error('reject')));とおなじ
+
+const {promise1, resolve, reject} = Promise.withResolvers();
+setTimeout(resolve, 1000)
+/*
+let resolve, reject
+const promise = new Promise((res. rej) => {
+  resolve = res
+  reject = rej
+})
+と内部的には同じ
+*/
+
+function func() {
+  throw 'hello'
+}
+Promise.try(func, 'a', 'b').then(value => console.log(value)).catch(error => console.log(error));
+/*
+new Promise((resolve) => {resolve(func('a', 'b'))})
+と内部的にはおなじ。
+関数の返り値がなんであっても処理できる。
+第二、第三引数を入れることもできる、その場合は関数の引数になる。
+*/
+
+setTimeout(() => {
+  console.log('after 1000ms');
+}, 1000);
+for (let i = 0; i < 1e9; i++);
+console.log('after for');
+//コールバック関数はmain.jsのすべての処理が終わってから実行される
+
+for (let i = 0; i <= 1e5; i++) {
+  setTimeout(() => {
+    document.body.textContent = i;
+  });
+}
+//JSの処理が終わってからレンダリングされる。
+//setTimeoutを使うとJSの処理の様子がアニメーションでみれる（10万が処理が終わるまでカウントされるアニメーション）。
+/*
+1.ディスプレイがレンダリングできないとき
+2.パソコンが重いとき
+3.表示させたい画面がディスプレイ上にないとき、
+4.レンダリングをしたところで見た目の変更が何もないとき、かつ、animation frame callbacksに何も処理がないとき
+5.ブラウザがスキップしたとき
+にレンダリングがスキップされる。
+*/
