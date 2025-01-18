@@ -236,3 +236,56 @@ for (let i = 0; i <= 1e5; i++) {
 5.ブラウザがスキップしたとき
 にレンダリングがスキップされる。
 */
+
+let asyncFunc = async () => {
+  /*
+  return new Promise((resolve), reject) => {
+    try{
+    let result = func()
+    resolve(result)
+    } catch(error) {
+      reject(error)
+      }
+  })
+内部的にこうなっている。
+  */
+  // let result = await navigator.mediaDevices.getUserMedia({video: true})
+  // console.log(result);
+  // await promisifiedSetTimeout(2000)
+  // console.log('2000ms');
+  // let position = await promisifiedCurrentPosition();
+  await 1;
+  /*
+  Promise.resolve(1).then(onFulfilled, onRejected);
+  を内部的にやっている。
+  */
+};
+//asyncをつけるとpromiseを返すようになる。
+//await演算子を使うとプロミスチェーンよりも簡潔に書くことができる。
+//.thenとおなじ。
+let result = asyncFunc();
+//console.log(result);
+
+promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(1)
+  }, 1000)
+});
+promise2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(2)
+  }, 2000)
+});
+promise3 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(3)
+  }, 500)
+});
+let promises = [promise, promise2, promise3];
+(async() => {
+  for await(const result of promises) {
+    //let result = await promise; ← for await(const result)と同じ
+    console.log(result);
+  }
+})();
+//配列のpromiseを前から一個ずつ実行する。
