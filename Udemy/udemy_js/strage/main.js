@@ -52,31 +52,50 @@ result = decodeURIComponent(result);
 //クッキーから文字列に戻す
 //クッキーは属性を設定できる。後で書いたもので上書きされる。
 
-let openRequest = indexedDB.open('shop');
+let openRequest = indexedDB.open('shop', 2);
 //DBをつくる。Promiseには対応していない。
+//バージョンの概念があるので、引数にバージョン番号を設定できる。なにも設定してなければVer1
 //openRequest.result
-openRequest.addEventListener('upgradeneeded', () => {
+openRequest.addEventListener('upgradeneeded', (event) => {
   console.log('success')
   let db = openRequest.result;
-  let books = db.createObjectStore('books', {
-    autoIncrement: true,
-    //これを付けるとオブジェクトストアを作るときにキーを指定しなくてよくなる。
-    keyPath: 'id',
-    //指定した文字列をオブジェクトストアのプロパティの第一引数において、キーとしてあつかう。
-  });
-  books.createIndex('by_title', 'title', {
-    unique: true,
-    //一意のデータのみ使えるルールを設定
-    multiEntry: true,
-    //タイトルが配列になっていた時、配列の要素がそれぞれ別々のキーとして展開される。
-  });
-  //Booksに対応するオブジェクトストアみたいなものを作ってくれる。
-  //もとのブックスのデータのtitleプロパティをキーにできる。
-  db.createObjectStore('games');
-  //オブジェクトストアを作る。upgradeneededの中でしか使えない。
-  db.deleteObjectStore('game');
-  //オブジェクトストアを削除する
-  console.log(db);
+  if (event.oldVersion < 1) {
+    let books = db.createObjectStore('books', {
+      autoIncrement: true,
+      //これを付けるとオブジェクトストアを作るときにキーを指定しなくてよくなる。
+      keyPath: 'id',
+      //指定した文字列をオブジェクトストアのプロパティの第一引数において、キーとしてあつかう。
+    });
+    books.createIndex('by_title', 'title', {
+      unique: true,
+      //一意のデータのみ使えるルールを設定
+      multiEntry: true,
+      //タイトルが配列になっていた時、配列の要素がそれぞれ別々のキーとして展開される。
+    });
+    //Booksに対応するオブジェクトストアみたいなものを作ってくれる。
+    //もとのブックスのデータのtitleプロパティをキーにできる。
+    db.createObjectStore('games');
+    //オブジェクトストアを作る。upgradeneededの中でしか使えない。
+    db.deleteObjectStore('game');
+    //オブジェクトストアを削除する
+    console.log(db);
+  }
+  //Verが1より小さいときのDB
+  if (event.oldVersion < 2) {
+    let games = db.createObjectStore('games', {
+      autoIncrement: true,
+      //これを付けるとオブジェクトストアを作るときにキーを指定しなくてよくなる。
+      keyPath: 'id',
+      //指定した文字列をオブジェクトストアのプロパティの第一引数において、キーとしてあつかう。
+    });
+    games.createIndex('by_title', 'title', {
+      unique: true,
+      //一意のデータのみ使えるルールを設定
+      multiEntry: true,
+      //タイトルが配列になっていた時、配列の要素がそれぞれ別々のキーとして展開される。
+    });
+  }
+  //Verが2より小さいときのDB
 });
 //successやerrorが発生する直前に発生するイベント
 //初めてDBを作り出す前に発生するイベント。
@@ -121,9 +140,11 @@ openRequest.addEventListener('success', () => {
   request.addEventListener('success', () => {
     cursor = request.result;
     console.log(cursor.key, cursor.value);
-    cursor.continue();
+    //cursor.continue();
     //呼び出されたときにもう一回requestイベントを対象にsuccessイベントを発生させる。
-    //次のデータで実行される。
+    //次のデータで実行される
+    cursor.advance(2);
+    //データを2個飛ばしでループする
   })
   request.addEventListener('success', () => {
     result = request.result;

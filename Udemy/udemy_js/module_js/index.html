@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="main.js" type="module"></script>
+  <!-- type="module"をつけることでJSファイルをモジュールとして使うことができるようになる。 -->
+  <!-- モジュール属性をつけるとデフォルトでdefer属性がつくので、なくてもDOMを解析した後に実行してくれる。 -->
+  <!-- asyncを明示的に書いたときは、asyncが優先されてdefer属性は適用されない -->
+  <!-- スクリプトタグ内に直接JSを書いてもdeferが適用される。 -->
+  <!-- おなじtype="module"があったときに、2回目以降のscriptタグは無視される。 -->
+  <!-- オリジンが違うと、CORSのチェックが入る。 -->
+  <script nomodule></script>
+  <!-- moduleに対応していない古いブラウザでだけ実行される。 -->
+  <!-- 古いブラウザは、module属性を理解しないので、module属性は実行されない。 -->
+</head>
+<body>
+</body>
+</html>
