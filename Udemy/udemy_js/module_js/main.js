@@ -31,3 +31,13 @@ import A from 'A.js'
 //デフォルトimport。Aが定数として扱われる。
 import A, {letA} from './A.js'
 //デフォルトimportと名前付きimportを同時にやる。
+
+if (true) {
+  let result = await import('./A.js');
+  console.log(result)
+}
+//動的インポート
+//必要な時だけファイルを読み込む。非同期処理
+
+import data from './data.json' with {type: 'json'};
+//インポート属性にJsonを指定した場合はデフォルトインポートしか使えない。
